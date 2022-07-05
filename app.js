@@ -4,19 +4,17 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000
 
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
 
   var today = new Date();
-  var currentDay = today.getDay();
+  var dayName = today.toLocaleString('ge-us', {weekday: 'long'});;
 
-  if (currentDay === 6 || currentDay === 0 ){
-    res.Write("<h1>Yay its the weekend</h1>");
-  } else {
-    res.sendFile(__dirname + "/index.html")
-  }
+
+  res.render("list", {dayNameEn: dayName});
+
 });
-
-
 
 
 app.listen(port, () => {
