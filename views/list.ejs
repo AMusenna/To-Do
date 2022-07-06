@@ -5,6 +5,25 @@
     <title>To-Do List</title>
   </head>
   <body>
-    <h1> Its a <%= dayNameEn %> </h1>
+
+    <h1> <%= dayNameEn %> </h1>
+
+    <ul>
+      <li>  Buy food</li>
+      <li>Cook food</li>
+      <li>Eat food</li>
+      <li><%= newListItem %></li>
+    </ul>
+
+    <form class="" action="/" method="post">
+
+      <input type="text" name="newItem">
+
+      <button type="submit" name="button">Add</button>
+
+    </form>
+
+
   </body>
+
 </html>
