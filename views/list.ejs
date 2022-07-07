@@ -3,16 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>To-Do List</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
 
     <h1> <%= dayNameEn %> </h1>
 
     <ul>
-      <li>  Buy food</li>
-      <li>Cook food</li>
-      <li>Eat food</li>
-      <li><%= newListItem %></li>
+
+     <% for (var i=0; i<newListItems.length; i++ ) { %>
+       <li ><%= newListItems[i] %></li>
+     <% } %>
+
     </ul>
 
     <form class="" action="/" method="post">
@@ -22,7 +24,6 @@
       <button type="submit" name="button">Add</button>
 
     </form>
-
 
   </body>
 
