@@ -7,23 +7,26 @@
   </head>
   <body>
 
-    <h1> <%= dayNameEn %> </h1>
+    <div class="box" id="heading">
+      <h1> <%= dayNameEn %> </h1>
+    </div>
 
-    <ul>
+    <div class="box">
 
-     <% for (var i=0; i<newListItems.length; i++ ) { %>
-       <li ><%= newListItems[i] %></li>
-     <% } %>
+      <% for (var i=0; i<newListItems.length; i++ ) { %>
+      <div class="item">
+        <input type="checkbox">
+        <p> <%= newListItems[i] %> </p>
+      </div>
+       <% } %>
 
-    </ul>
+      <form class="" action="/" method="post">
+         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+         <button type="submit" name="button">+</button>
+      </form>
 
-    <form class="" action="/" method="post">
+    </div>
 
-      <input type="text" name="newItem">
-
-      <button type="submit" name="button">Add</button>
-
-    </form>
 
   </body>
 
