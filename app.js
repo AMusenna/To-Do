@@ -5,6 +5,7 @@ const app = express();
 const port = 3000
 
 let items = ["Learn Deutsch", "Learn more codes", "Love your wife"];
+let workItems = [];
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -22,7 +23,7 @@ app.get('/', (req, res) => {
 
   let dayName = today.toLocaleDateString('de-DE', {month: 'long', day: 'numeric', weekday: 'long'});
 
-  res.render("list", {dayNameEn: dayName, newListItems: items});
+  res.render("list", {listTitle: dayName, newListItems: items});
 
 });
 
@@ -32,13 +33,31 @@ app.post("/", function(req, res){
 
   let item = req.body.newItem;
 
-  items.push(item);
-
-  res.redirect("/");
-
+  if (req.body.list === "Work List") {
+    workItems.push(item);
+    res.redirect("/work");
+  } else {
+    items.push(item);
+    res.redirect("/");
+  }
 
 });
 
+
+app.get("/work", function(req, res) {
+  res.render("list", {listTitle: "Work List", newListItems: workItems});
+});
+
+app.get("/about", function(req, res) {
+  res.render("about");
+});
+
+
+app.post("/work", function(req, res) {
+  let item = req.body.newItem;
+  workItems.push(item);
+  res.redirect("/work");
+});
 
 
 app.listen(port, () => {
