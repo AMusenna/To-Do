@@ -33,34 +33,85 @@ const item3 = new  Item({
 
 const defaultItems = [item1, item2 , item3];
 
-Item.insertMany(defaultItems, function(err) {
-  if (err) {
-    console.log(error);
-  } else {
-    console.log("Successfully saved default items to DB.");
-  }
-});
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
 
 
 app.get('/', (req, res) => {
 
-
-  res.render("list", {listTitle: "Today", newListItems: items});
+  Item.find({}, function(err, foundItems){
+    if (foundItems.length === 0) {
+      Item.insertMany(defaultItems, function(err) {
+        if (err) {
+          console.log(error);
+        } else {
+          console.log("Successfully saved default items to DB.");
+        }
+      });
+      res.redirect("/");
+    } else {
+      res.render("list", {listTitle: "Today", newListItems: foundItems});
+    }
+  });
 
 });
 
 
+app.get("/:customListName", function(req, res) {
+
+  const customListName =  req.params.customListName;
+
+  List.findOne({name: customListName}, function(err, foundList) {
+    if(!err) {
+      if (!foundList){
+        // Create a new list
+        const list = new List({
+          name: customListName,
+          items: defaultItems
+        });
+
+        list.save();
+        res.redirect("/" + customListName)
+
+      } else {
+        //Show an existing list
+        res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+      }
+    }
+  });
+
+});
+
+
+
 app.post("/", function(req, res){
 
-  const item = req.body.newItem;
+  const itemName = req.body.newItem;
 
-  if (req.body.list === "Work List") {
-    workItems.push(item);
-    res.redirect("/work");
-  } else {
-    items.push(item);
-    res.redirect("/");
-  }
+  const item = new Item ({
+    name: itemName
+  });
+
+  item.save();
+
+  res.redirect("/");
+
+});
+
+app.post("/delete", function(req, res){
+
+  const checkedItemId = req.body.checkbox;
+
+  Item.findByIdAndRemove(checkedItemId, function(err) {
+    if (!err) {
+      console.log("Successfully checked item.");
+    }
+  });
+  res.redirect("/");
 });
 
 
